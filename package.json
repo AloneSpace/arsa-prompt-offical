@@ -1,0 +1,25 @@
+{
+    "name": "arsa-prompt-offical",
+    "version": "1.0.0",
+    "description": "LINE Chatbot สำหรับ สมัครอาสาสมัคร และขอความช่วยเหลือในสถานการณ์ COVID-19",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon server.js",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AloneSpace/arsa-prompt-offical.git"
+    },
+    "author": "AloneCoding",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/AloneSpace/arsa-prompt-offical/issues"
+    },
+    "homepage": "https://github.com/AloneSpace/arsa-prompt-offical#readme",
+    "dependencies": {
+        "express": "^4.17.1",
+        "nodemon": "^2.0.12"
+    }
+}
