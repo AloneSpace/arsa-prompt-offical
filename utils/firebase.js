@@ -4,7 +4,6 @@ let serviceAccount = require("../config/arsa-prompt-offical-firebase-adminsdk-ao
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
+const db = admin.firestore();
 
-module.exports = {
-    admin,
-};
+module.exports = db;
