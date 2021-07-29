@@ -7,15 +7,16 @@ $(document).ready(() => {
     $("#confirmBtn").click(() => {
         $.sweetModal.confirm('ยืนยันการสมัครอาสาสมัคร', 'ยืนยันหรือไม่', function () {
             let userId = $.urlParam('id');
-            let uri_decoded = JSON.parse(decodeURI(userId));
+            let uri_decoded = JSON.parse(atob(decodeURI(userId)));
             let dataSet = {
                 name : $("#name").val(),
                 address : $("#address").val(),
                 phone : $("#tel").val(),
                 otherContact : $("#otherContact").val(),
                 province : $("#province").val(),
-                userId : uri_decoded
+                ...uri_decoded
             }
+            
             console.log(dataSet);
 
             $.sweetModal('สมัครอาสาสำเร็จ !');
