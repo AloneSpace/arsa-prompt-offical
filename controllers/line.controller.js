@@ -7,6 +7,9 @@ let headers = {
 };
 
 const { covidStats } = require("../controllers/stats.controller");
+const {
+    fetchVolunteersByProvince,
+} = require("../controllers/volunteer.controller");
 const { thousand_separator } = require("../utils/convert");
 
 exports.line_controller = async function (req, res) {
@@ -54,7 +57,7 @@ async function reply(replyToken, text, userId) {
         case "ขอความช่วยเหลือ":
             body.messages[0] = {
                 type: "text",
-                text: "🔍 กรุณาพิมพ์จังหวัด",
+                text: "🔍 กรุณาพิมพ์ชื่อจังหวัด",
             };
             break;
         case "สมัครอาสา":
@@ -80,7 +83,7 @@ async function reply(replyToken, text, userId) {
                                 action: {
                                     type: "uri",
                                     label: "🙌 กดปุ่มเพื่อสมัครอาสา",
-                                    uri: `https://yellow-octopus-58.loca.lt/v1/pages/register?id=${encodeURI(
+                                    uri: `https://yellowtruck.loca.lt/v1/pages/register?id=${encodeURI(
                                         //TODO: มาแก้ URL ตอน Production
                                         uri_encoded
                                     )}`,
@@ -96,8 +99,20 @@ async function reply(replyToken, text, userId) {
             if (province.length) {
                 body.messages[0] = {
                     type: "text",
-                    text: `คุณอยู่จังหวัด ${province[0]}`,
+                    text: `📌 จังหวัดที่คุณเลือก ${province[0]}`,
                 };
+                let volunteers = await fetchVolunteersByProvince(province[0]);
+                body.messages[1] = {
+                    type: "text",
+                    text: "",
+                };
+                if (!volunteers.length)
+                    body.messages[1].text = `❌❌ ไม่พบอาสาสมัคร 😢😢`;
+                for (let [index, volunteer] of volunteers.entries()) {
+                    body.messages[1].text += `• ${volunteer.name}\n📞 ${volunteer.phone}\n🏠 ${volunteer.address}\n🌐 ช่องทารการติดต่ออื่นๆ \n${volunteer.otherContact}`;
+                    if (index !== volunteers.length - 1)
+                        body.messages[1].text += "\n\n";
+                }
             }
             break;
     }
