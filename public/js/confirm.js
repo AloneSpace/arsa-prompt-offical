@@ -19,7 +19,7 @@ $(document).ready(() => {
             
             console.log(dataSet);
 
-            $.sweetModal('สมัครอาสาสำเร็จ !');
+            $.sweetModal(JSON.stringify(dataSet));
 
         }, function () {
             // $.sweetModal('You declined. That\'s okay!');
