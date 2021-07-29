@@ -57,6 +57,40 @@ async function reply(replyToken, text, userId) {
                 text: "🔍 กรุณาพิมพ์จังหวัด",
             };
             break;
+        case "สมัครอาสา":
+            let uri_encoded = Buffer.from(
+                JSON.stringify({
+                    userId: userId,
+                    replyToken: replyToken,
+                })
+            ).toString("hex");
+            body.messages[0] = {
+                type: "flex",
+                altText: "สมัครอาสาสมัคร",
+                contents: {
+                    type: "bubble",
+                    body: {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                            {
+                                type: "button",
+                                style: "primary",
+                                height: "sm",
+                                action: {
+                                    type: "uri",
+                                    label: "🙌 กดปุ่มเพื่อสมัครอาสา",
+                                    uri: `https://yellow-octopus-58.loca.lt/v1/pages/register?id=${encodeURI(
+                                        //TODO: มาแก้ URL ตอน Production
+                                        uri_encoded
+                                    )}`,
+                                },
+                            },
+                        ],
+                    },
+                },
+            };
+            break;
         default:
             let province = provinces.filter((prov) => prov.includes(text));
             if (province.length) {
