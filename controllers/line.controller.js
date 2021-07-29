@@ -33,24 +33,25 @@ async function reply(replyToken, text, userId) {
             let data = await covidStats();
             body.messages[0] = {
                 type: "text",
-                text: `⌚️ ข้อมูลเมื่อ ${data.UpdateDate
-                    }\n\n==========================\n\n➕ ผู้ติดเชื้อสะสม ${thousand_separator(
-                        data.cases
-                    )} คน\n\n💊 รักษาหายสะสม ${thousand_separator(
-                        data.recovered
-                    )} คน\n\n🏥 กำลังรักษา ${thousand_separator(
-                        data.active
-                    )} คน\n\n🪦 ผู้เสียชีวิตทั้งหมด ${thousand_separator(
-                        data.deaths
-                    )} คน\n\n🦠 ผู้ติดเชื้อวันนี้ ${thousand_separator(
-                        data.todayCases
-                    )} คน\n\n😀 รักษาหายวันนี้ ${thousand_separator(
-                        data.todayRecovered
-                    )} คน\n\n🤢 อาการรุนแรง ${thousand_separator(
-                        data.critical
-                    )} คน\n\n💀 ผู้เสียชีวิตวันนี้ ${thousand_separator(
-                        data.todayDeaths
-                    )} คน`,
+                text: `⌚️ ข้อมูลเมื่อ ${
+                    data.UpdateDate
+                }\n\n==========================\n\n➕ ผู้ติดเชื้อสะสม ${thousand_separator(
+                    data.cases
+                )} คน\n\n💊 รักษาหายสะสม ${thousand_separator(
+                    data.recovered
+                )} คน\n\n🏥 กำลังรักษา ${thousand_separator(
+                    data.active
+                )} คน\n\n🪦 ผู้เสียชีวิตทั้งหมด ${thousand_separator(
+                    data.deaths
+                )} คน\n\n🦠 ผู้ติดเชื้อวันนี้ ${thousand_separator(
+                    data.todayCases
+                )} คน\n\n😀 รักษาหายวันนี้ ${thousand_separator(
+                    data.todayRecovered
+                )} คน\n\n🤢 อาการรุนแรง ${thousand_separator(
+                    data.critical
+                )} คน\n\n💀 ผู้เสียชีวิตวันนี้ ${thousand_separator(
+                    data.todayDeaths
+                )} คน`,
             };
             break;
         case "ขอความช่วยเหลือ":
@@ -60,11 +61,13 @@ async function reply(replyToken, text, userId) {
             };
             break;
         case "สมัครอาสา":
-            let uri_encoded = JSON.stringify(
-                {
+            let uri_encoded = Buffer.from(
+                JSON.stringify({
                     userId: userId,
                     replyToken: replyToken,
-                });
+                }),
+                "base64"
+            );
             body.messages[0] = {
                 type: "flex",
                 altText: "สมัครอาสาสมัคร",
@@ -81,7 +84,7 @@ async function reply(replyToken, text, userId) {
                                 action: {
                                     type: "uri",
                                     label: "🙌 กดปุ่มเพื่อสมัครอาสา",
-                                    uri: `https://yellowtruck.loca.lt/v1/pages/register?id=${encodeURI(
+                                    uri: `https://sweet-mole-3.loca.lt/v1/pages/register?id=${encodeURI(
                                         //TODO: มาแก้ URL ตอน Production
                                         uri_encoded
                                     )}`,
