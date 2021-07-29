@@ -1,3 +1,38 @@
 extends layout.pug
 block content
-    h1 Register
+    .container.p-3
+        .row 
+            .col-12 
+                img(src="/images/lg1.png").rounded.mx-auto.d-block.img-fluid
+        .row 
+            .col-12
+                .card.shadow-sm
+                    .card-body
+                        h5.text-center สมัครอาสา 
+                        hr
+                        div
+                            .mb-3
+                                label.form-label(for='name') ชื่อ-นามสกุล
+                                input#name.form-control.form-control-sm(type='text' name="name" aria-describedby='nameHelp' placeholder="กรอกชื่อ-นามสกุล" required)
+                                .invalid-feedback โปรดใส่ชื่อ-นามสกุล
+                            .mb-3
+                                label.form-label(for='address') ที่อยู่
+                                textarea#address(name="address", cols="30", rows="2",placeholder="กรอกที่อยู่" required).form-control
+                            .mb-3
+                                label.form-label(for='name') เบอร์โทรศัพท์ติดต่อ
+                                input#tel.form-control.form-control-sm(type='text' name="" aria-describedby='nameHelp' placeholder="ใส่เบอร์โทรศัพท์ของคุณ" required)
+                            .mb-3
+                                label.form-label(for='address') ช่องทางการติดต่ออื่นๆ
+                                textarea#otherContact(name="address", cols="30", rows="2",placeholder="กรอกช่องทางการติดต่ออื่นๆ").form-control
+                            
+                            .mb-3
+                                label.form-label(for='name' required) จังหวัด
+                                select#province.form-select.form-select-sm(aria-label='.form-select-sm example')
+                                    option(selected='') เลือกจังหวัด
+                                    each p in provinces
+                                        option(select=p )= p
+                            .d-grid.gap-2 
+                                button.btn.btn-block.c-orange.text-white(type='button')#confirmBtn ยืนยันข้อมูล
+            
+block scripts 
+    script(src="/js/confirm.js") 
