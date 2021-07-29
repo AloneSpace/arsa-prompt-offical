@@ -2,4 +2,5 @@ module.exports = ({ express, app }) => {
     app.use("/v1/volunteers", require("./volunteer.route")(express));
     app.use("/v1/stats", require("./stats.route")(express));
     app.use("/v1/line", require("./line.route")(express));
+    app.use("/v1/pages",require('./pages.route')(express));
 };
