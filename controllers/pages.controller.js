@@ -1,13 +1,14 @@
+const { provinces } = require('../config/thailand');
 let index = async (req, res) => {
     res.render('index');
 }
 
-let register = async (req, res)=>{
+let register = async (req, res) => {
     let data = req.body;
-    res.render('register');
+    res.render('register', { provinces: provinces });
 }
 
-module.exports ={
+module.exports = {
     index,
     register
 }
