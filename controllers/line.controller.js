@@ -65,9 +65,8 @@ async function reply(replyToken, text, userId) {
                 JSON.stringify({
                     userId: userId,
                     replyToken: replyToken,
-                }),
-                "base64"
-            );
+                })
+            ).toString("base64");
             body.messages[0] = {
                 type: "flex",
                 altText: "สมัครอาสาสมัคร",
@@ -83,9 +82,8 @@ async function reply(replyToken, text, userId) {
                                 height: "sm",
                                 action: {
                                     type: "uri",
-                                    label: "🙌 กดปุ่มเพื่อสมัครอาสา",
+                                    label: "🙌 กดปุ่มเพื่อสมัครอาสา", //TODO: มาแก้ URL ตอน Production
                                     uri: `https://sweet-mole-3.loca.lt/v1/pages/register?id=${encodeURI(
-                                        //TODO: มาแก้ URL ตอน Production
                                         uri_encoded
                                     )}`,
                                 },
