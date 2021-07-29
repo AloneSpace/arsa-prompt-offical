@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { provinces } = require("../config/thailand");
 
 let headers = {
     "Content-Type": "application/json",
@@ -6,7 +7,7 @@ let headers = {
 };
 
 const { covidStats } = require("../controllers/stats.controller");
-const convert;
+const { thousand_separator } = require("../utils/convert");
 
 exports.line_controller = async function (req, res) {
     try {
@@ -29,10 +30,41 @@ async function reply(replyToken, text, userId) {
             let data = await covidStats();
             body.messages[0] = {
                 type: "text",
-                text: `⌚️ ข้อมูลเมื่อ ${data.UpdateDate}\n\n🦠 ผู้ติดเชื้อสะสม ${data.cases} คน`,
+                text: `⌚️ ข้อมูลเมื่อ ${
+                    data.UpdateDate
+                }\n\n==========================\n\n➕ ผู้ติดเชื้อสะสม ${thousand_separator(
+                    data.cases
+                )} คน\n\n💊 รักษาหายสะสม ${thousand_separator(
+                    data.recovered
+                )} คน\n\n🏥 กำลังรักษา ${thousand_separator(
+                    data.active
+                )} คน\n\n🪦 ผู้เสียชีวิตทั้งหมด ${thousand_separator(
+                    data.deaths
+                )} คน\n\n🦠 ผู้ติดเชื้อวันนี้ ${thousand_separator(
+                    data.todayCases
+                )} คน\n\n😀 รักษาหายวันนี้ ${thousand_separator(
+                    data.todayRecovered
+                )} คน\n\n🤢 อาการรุนแรง ${thousand_separator(
+                    data.critical
+                )} คน\n\n💀 ผู้เสียชีวิตวันนี้ ${thousand_separator(
+                    data.todayDeaths
+                )} คน`,
+            };
+            break;
+        case "ขอความช่วยเหลือ":
+            body.messages[0] = {
+                type: "text",
+                text: "🔍 กรุณาพิมพ์จังหวัด",
             };
             break;
         default:
+            let province = provinces.filter((prov) => prov.includes(text));
+            if (province.length) {
+                body.messages[0] = {
+                    type: "text",
+                    text: `คุณอยู่จังหวัด ${province[0]}`,
+                };
+            }
             break;
     }
     await axios({
