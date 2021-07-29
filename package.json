@@ -24,6 +24,7 @@
         "express": "^4.17.1",
         "firebase": "^8.8.0",
         "firebase-admin": "^9.11.0",
-        "nodemon": "^2.0.12"
+        "nodemon": "^2.0.12",
+        "pug": "^3.0.2"
     }
 }
