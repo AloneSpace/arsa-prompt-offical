@@ -38,24 +38,27 @@ $(document).ready(() => {
                 axios.post('/v1/volunteers/create', dataSet)
                     .then(res => {
                         console.log(res.data);
-                        if (res.status == 201) return Swal.fire(
-                            'สำเร็จ !',
-                            'การสมัครอาสาสำเร็จ',
-                            'success'
-                        );
+
+                        if (res.status == 201) return Swal.fire({
+                            icon: 'success',
+                            title: 'สำเร็จ !',
+                            text: 'การสมัครอาสาสำเร็จ',
+                            confirmButtonColor: '#dba01f',
+                        })
                         return Swal.fire({
                             icon: 'error',
                             title: 'ไม่สำเร็จ',
                             text: res.data.message,
+                            confirmButtonColor: '#dba01f',
                         })
                     })
                     .catch(err => {
-                        console.log(err);
+                        console.log(err.response.data);
                         Swal.fire({
                             icon: 'error',
                             title: 'ไม่สำเร็จ',
-                            text: 'มีบางอย่างผิดพลาด โปรดลองอีกครั้ง',
-                            footer: '<p>กดปิดเว็บไซต์แล้วกดสมัครอาสาจากในไลน์อีกครั้ง</p>'
+                            text: err.response.data.message,
+                            confirmButtonColor: '#dba01f',
                         })
                     })
             }
