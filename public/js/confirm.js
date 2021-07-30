@@ -22,8 +22,9 @@ $(document).ready(() => {
                 if (!dataFromLine) return Swal.fire({
                     icon: 'error',
                     title: 'ไม่สำเร็จ',
-                    text: 'มีบางอย่างผิดพลาด โปรดลองอีกครั้ง',
-                    footer: '<p>กดปิดเว็บไซต์แล้วกดสมัครอาสาจากในไลน์อีกครั้ง</p>'
+                    text: 'URL ผิดพลาดโปรดลองอีกครั้ง',
+                    footer: '<p>กดปิดเว็บไซต์แล้วกดสมัครอาสาจากในไลน์อีกครั้ง</p>',
+                    confirmButtonColor: '#dba01f',
                 })
                 let uri_decoded = JSON.parse(atob(decodeURI(dataFromLine)));
                 let dataSet = {
