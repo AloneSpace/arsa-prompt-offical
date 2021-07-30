@@ -1,4 +1,5 @@
 const db = require("../utils/firebase");
+const axios = require("axios");
 const volunteersRef = db.collection("volunteers");
 
 const getAllVolunteers = async function (req, res) {
@@ -17,7 +18,7 @@ const findVolunteersByUserId = async function (req, res) {
     const volunteers = await await fetchVolunteersByUserId(req.body.userId);
     if (!volunteers.length) return res.status(404).json("No Data Found");
     return res.status(200).json(volunteers);
-}
+};
 
 const createVolunteers = async function (req, res) {
     let reqData = req.body;
@@ -32,12 +33,13 @@ const createVolunteers = async function (req, res) {
     )
         return res.status(200).json({
             status: "error",
-            message: "Fill the form"
+            message: "Fill the form",
         });
-    if ((await fetchVolunteersByUserId(reqData.userId)).length) return res.status(200).json({
-        status: "error",
-        message: "You're already volunteers"
-    })
+    if ((await fetchVolunteersByUserId(reqData.userId)).length)
+        return res.status(400).json({
+            status: "error",
+            message: "You're already volunteers",
+        });
     let data = {
         userId: req.body.userId,
         address: req.body.address,
@@ -49,15 +51,33 @@ const createVolunteers = async function (req, res) {
     };
     try {
         await volunteersRef.add(data);
+        await axios({
+            method: "post",
+            url: "https://api.line.me/v2/bot/message/reply",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.LINE_TOKEN}`,
+            },
+            data: JSON.stringify({
+                replyToken: reqData.replyToken,
+                messages: [
+                    {
+                        type: "text",
+                        text:
+                            "🙏 ทางเราขอขอบคุณ ท่านที่สละเวลาอันมีค่าเพื่อช่วยเหลือคนอื่น",
+                    },
+                ],
+            }),
+        });
         return res.status(201).json({
             status: "success",
-            message: "Create Success"
+            message: "Create Success",
         });
     } catch (err) {
         console.log(err);
         return res.status(400).json({
             status: "error",
-            message: "Something wrong"
+            message: "Something wrong",
         });
     }
 };
