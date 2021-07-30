@@ -1,6 +1,7 @@
 const db = require("../utils/firebase");
 const axios = require("axios");
 const volunteersRef = db.collection("volunteers");
+const { randid } = require("../utils/randomId");
 
 const getAllVolunteers = async function (req, res) {
     const volunteers = await fetchVolunteers();
@@ -40,6 +41,7 @@ const createVolunteers = async function (req, res) {
             status: "error",
             message: "You're already volunteers",
         });
+    let randId = randid(16);
     let data = {
         userId: req.body.userId,
         address: req.body.address,
@@ -48,6 +50,7 @@ const createVolunteers = async function (req, res) {
         otherContact: req.body.otherContact,
         phone: req.body.phone,
         province: req.body.province,
+        secretId : randId
     };
     try {
         await volunteersRef.add(data);
@@ -69,6 +72,7 @@ const createVolunteers = async function (req, res) {
                 ],
             }),
         });
+        console.log(data);
         return res.status(201).json({
             status: "success",
             message: "Create Success",
