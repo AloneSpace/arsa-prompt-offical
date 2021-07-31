@@ -11,7 +11,7 @@ RUN yarn install && yarn cache clean --force
 
 #USER node
 
-EXPOSE 3000
+EXPOSE 3002
 
 CMD [ "yarn", "install" ]
 CMD [ "yarn", "start" ]

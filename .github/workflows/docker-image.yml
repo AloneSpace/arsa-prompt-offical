@@ -1,25 +1,27 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 jobs:
-  build:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: Define .env file
-      env: # Or as an environment variable
-        FIREBASE_APIKEY: ${{ secrets.FIREBASE_APIKEY }}
-        FIREBASE_AUTHDOMAIN: ${{ secrets.FIREBASE_AUTHDOMAIN }}
-        FIREBASE_PROJECTID: ${{ secrets.FIREBASE_PROJECTID }}
-        FIREBASE_STORAGEBUCKET: ${{ secrets.FIREBASE_STORAGEBUCKET }}
-        FIREBASE_MESSAGINGSENDERID: ${{ secrets.FIREBASE_MESSAGINGSENDERID }}
-        FIREBASE_APPID: ${{ secrets.FIREBASE_APPID }}
-        FIREBASE_MEASUREMENTID: ${{ secrets.FIREBASE_MEASUREMENTID }}
-        LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag arsa-prompt
+    build:
+        runs-on: self-hosted
+        steps:
+            - uses: actions/checkout@v2
+            - name: Define .env file
+              shell: bash
+              run: |
+                  touch .env
+                  echo LINE_TOKEN=${{ secrets.LINE_TOKEN }} >> .env
+            - name: Define firebase config
+              run: 'echo "$FIREBASE_CONFIG" > ./config/arsa-prompt-offical-firebase-adminsdk-aov6q-764569afd3.json'
+              shell: bash
+              env:
+                  FIREBASE_CONFIG: ${{secrets.FIREBASE_CONFIG}}
+            - name: Build the Docker image
+              run: docker build . --file Dockerfile --tag arsa-prompt
+            - name: Run container
+              run: docker run -p 3002:3002
