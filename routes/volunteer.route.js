@@ -6,6 +6,7 @@ module.exports = (express) => {
     route.get("/", controller.getAllVolunteers);
     route.get("/:province", controller.findVolunteersByProvince);
     route.post("/create", controller.createVolunteers);
-
+    // route.get("/find/secret/:secretId",controller.findVolunteersBySecretId)
+    route.post("/update/:secret", controller.updateVolunteers);
     return route;
 };
