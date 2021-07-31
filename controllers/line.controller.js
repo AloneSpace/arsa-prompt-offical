@@ -85,7 +85,7 @@ async function reply(replyToken, text, userId) {
                                 action: {
                                     type: "uri",
                                     label: "🙌 กดปุ่มเพื่อสมัครอาสา", //TODO: มาแก้ URL ตอน Production
-                                    uri: `https://covid19.alonecoding.com/v1/pages/register?id=${encodeURI(
+                                    uri: `https://arsa-prompt.alonecoding.com/v1/pages/register?id=${encodeURI(
                                         uri_encoded
                                     )}`,
                                 },
