@@ -14,6 +14,7 @@ const { thousand_separator } = require("../utils/convert");
 
 exports.line_controller = async function (req, res) {
     try {
+        console.log(req.body);
         let replyToken = req.body.events[0].replyToken;
         await reply(
             replyToken,
@@ -28,6 +29,7 @@ exports.line_controller = async function (req, res) {
 
 async function reply(replyToken, text, userId) {
     let body = { replyToken: replyToken, messages: [{}] };
+    console.log(text);
     switch (text) {
         case "สถานการณ์โควิดวันนี้":
             let data = await covidStats();
@@ -83,7 +85,7 @@ async function reply(replyToken, text, userId) {
                                 action: {
                                     type: "uri",
                                     label: "🙌 กดปุ่มเพื่อสมัครอาสา", //TODO: มาแก้ URL ตอน Production
-                                    uri: `https://sweet-mole-3.loca.lt/v1/pages/register?id=${encodeURI(
+                                    uri: `https://covid19.alonecoding.com/v1/pages/register?id=${encodeURI(
                                         uri_encoded
                                     )}`,
                                 },
@@ -96,11 +98,11 @@ async function reply(replyToken, text, userId) {
         default:
             let province = provinces.filter((prov) => prov.includes(text));
             if (province.length) {
+                let volunteers = await fetchVolunteersByProvince(province[0]);
                 body.messages[0] = {
                     type: "text",
-                    text: `📌 จังหวัดที่คุณเลือก ${province[0]}`,
+                    text: `📌 จังหวัดที่คุณเลือก ${province[0]} (${volunteers.length} คน)`,
                 };
-                let volunteers = await fetchVolunteersByProvince(province[0]);
                 body.messages[1] = {
                     type: "text",
                     text: "",
@@ -112,7 +114,11 @@ async function reply(replyToken, text, userId) {
                     if (index !== volunteers.length - 1)
                         body.messages[1].text += "\n\n";
                 }
-            }
+            } else
+                body.messages[0] = {
+                    type: "text",
+                    text: `🧐 เราไม่พบจังหวัดนี้ในประเทศไทย`,
+                };
             break;
     }
     await axios({
