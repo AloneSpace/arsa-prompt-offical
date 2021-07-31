@@ -63,8 +63,7 @@ async function reply(replyToken, text, userId) {
         case "สมัครอาสา":
             let uri_encoded = Buffer.from(
                 JSON.stringify({
-                    userId: userId,
-                    replyToken: replyToken,
+                    userId: userId
                 })
             ).toString("hex");
             body.messages[0] = {
