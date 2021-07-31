@@ -16,6 +16,7 @@ jobs:
               run: |
                   touch .env
                   echo LINE_TOKEN=${{ secrets.LINE_TOKEN }} >> .env
+                  echo PORT=${{ secrets.PORT }} >> .env
             - name: Define firebase config
               run: 'echo "$FIREBASE_CONFIG" > ./config/arsa-prompt-offical-firebase-adminsdk-aov6q-764569afd3.json'
               shell: bash
