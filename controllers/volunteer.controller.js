@@ -83,13 +83,13 @@ const createVolunteers = async function (req, res) {
             await volunteersRef.add(data);
             await axios({
                 method: "post",
-                url: "https://api.line.me/v2/bot/message/reply",
+                url: "https://api.line.me/v2/bot/message/push",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${process.env.LINE_TOKEN}`,
                 },
                 data: JSON.stringify({
-                    replyToken: uri_decoded.replyToken,
+                    to: uri_decoded.userId,
                     messages: [
                         {
                             type: "text",

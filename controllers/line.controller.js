@@ -68,10 +68,6 @@ async function reply(replyToken, text, userId) {
                 })
             ).toString("hex");
             body.messages[0] = {
-                type: "text",
-                text: replyToken,
-            };
-            body.messages[1] = {
                 type: "flex",
                 altText: "สมัครอาสาสมัคร",
                 contents: {
