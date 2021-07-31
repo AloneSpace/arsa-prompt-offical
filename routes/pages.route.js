@@ -4,6 +4,6 @@ module.exports = (express) => {
     const route = express.Router();
 
     route.get("/", controller.index);
-    route.get("/register", controller.register);
+    route.get("/register/:data", controller.register);
     return route;
 };

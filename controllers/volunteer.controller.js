@@ -23,67 +23,80 @@ const findVolunteersByUserId = async function (req, res) {
 
 const createVolunteers = async function (req, res) {
     let reqData = req.body;
-    if (
-        !reqData.userId ||
-        !reqData.address ||
-        !reqData.name ||
-        !reqData.otherContact ||
-        !reqData.phone ||
-        !reqData.province ||
-        !reqData.replyToken
-    )
-        return res.status(200).json({
-            status: "error",
-            message: "Fill the form",
-        });
-    if ((await fetchVolunteersByUserId(reqData.userId)).length)
-        return res.status(400).json({
-            status: "error",
-            message: "You're already volunteers",
-        });
-    let randId = randid(16);
-    let data = {
-        userId: req.body.userId,
-        address: req.body.address,
-        created_at: +new Date(),
-        name: req.body.name,
-        otherContact: req.body.otherContact,
-        phone: req.body.phone,
-        province: req.body.province,
-        secretId : randId
-    };
+    let uri = reqData.uri;
     try {
-        await volunteersRef.add(data);
-        await axios({
-            method: "post",
-            url: "https://api.line.me/v2/bot/message/reply",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${process.env.LINE_TOKEN}`,
-            },
-            data: JSON.stringify({
-                replyToken: reqData.replyToken,
-                messages: [
-                    {
-                        type: "text",
-                        text:
-                            "🙏 ทางเราขอขอบคุณ ท่านที่สละเวลาอันมีค่าเพื่อช่วยเหลือคนอื่น",
-                    },
-                ],
-            }),
-        });
-        console.log(data);
-        return res.status(201).json({
-            status: "success",
-            message: "Create Success",
-        });
+        let uri_decoded = JSON.parse(
+            Buffer.from(decodeURI(uri), "hex").toString()
+        );
+        if (
+            !reqData.address ||
+            !reqData.name ||
+            !reqData.otherContact ||
+            !reqData.phone ||
+            !reqData.province ||
+            !uri_decoded.userId ||
+            !uri_decoded.replyToken
+        )
+            return res.status(200).json({
+                status: "error",
+                message: "Fill the form",
+            });
+        if ((await fetchVolunteersByUserId(uri_decoded.userId)).length)
+            return res.status(400).json({
+                status: "error",
+                message: "You're already volunteers",
+            });
+        let randId = randid(16);
+        let data = {
+            userId: uri_decoded.userId,
+            address: reqData.address,
+            created_at: +new Date(),
+            name: reqData.name,
+            otherContact: reqData.otherContact,
+            phone: reqData.phone,
+            province: reqData.province,
+            secretId: randId
+        };
+        try {
+            await volunteersRef.add(data);
+            await axios({
+                method: "post",
+                url: "https://api.line.me/v2/bot/message/reply",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.LINE_TOKEN}`,
+                },
+                data: JSON.stringify({
+                    replyToken: uri_decoded.replyToken,
+                    messages: [
+                        {
+                            type: "text",
+                            text:
+                                "🙏 ทางเราขอขอบคุณ ท่านที่สละเวลาอันมีค่าเพื่อช่วยเหลือคนอื่น",
+                        },
+                    ],
+                }),
+            });
+            // console.log(data);
+            return res.status(201).json({
+                status: "success",
+                message: "Create Success",
+            });
+        } catch (err) {
+            // console.log(err);
+            return res.status(400).json({
+                status: "error",
+                message: "Something wrong ",
+            });
+        }
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(400).json({
             status: "error",
-            message: "Something wrong",
+            message: "URI wrong",
         });
     }
+
 };
 
 const fetchVolunteers = async function () {

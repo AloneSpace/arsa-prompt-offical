@@ -1,10 +1,3 @@
-
-$.urlParam = function (name) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results) return results[1];
-    else return 0;
-}
-
 $(document).ready(() => {
     $("#confirmBtn").click(() => {
         Swal.fire({
@@ -18,22 +11,20 @@ $(document).ready(() => {
             cancelButtonText: 'ปิด'
         }).then((result) => {
             if (result.isConfirmed) {
-                let dataFromLine = $.urlParam('id');
-                if (!dataFromLine) return Swal.fire({
-                    icon: 'error',
-                    title: 'ไม่สำเร็จ',
-                    text: 'URL ผิดพลาดโปรดลองอีกครั้ง',
-                    footer: '<p>กดปิดเว็บไซต์แล้วกดสมัครอาสาจากในไลน์อีกครั้ง</p>',
-                    confirmButtonColor: '#dba01f',
-                })
-                let uri_decoded = JSON.parse(atob(decodeURI(dataFromLine)));
+                // if (!dataFromLine) return Swal.fire({
+                //     icon: 'error',
+                //     title: 'ไม่สำเร็จ',
+                //     text: 'URL ผิดพลาดโปรดลองอีกครั้ง',
+                //     footer: '<p>กดปิดเว็บไซต์แล้วกดสมัครอาสาจากในไลน์อีกครั้ง</p>',
+                //     confirmButtonColor: '#dba01f',
+                // })
                 let dataSet = {
                     name: $("#name").val(),
                     address: $("#address").val(),
                     phone: $("#tel").val(),
                     otherContact: $("#otherContact").val(),
                     province: $("#province").val(),
-                    ...uri_decoded
+                    uri : $("#uri").val()
                 }
                 console.log(dataSet);
                 axios.post('/v1/volunteers/create', dataSet)
