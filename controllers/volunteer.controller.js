@@ -56,8 +56,7 @@ const createVolunteers = async function (req, res) {
             !reqData.otherContact ||
             !reqData.phone ||
             !reqData.province ||
-            !uri_decoded.userId ||
-            !uri_decoded.replyToken
+            !uri_decoded.userId 
         )
             return res.status(200).json({
                 status: "error",
