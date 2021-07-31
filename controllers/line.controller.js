@@ -66,7 +66,7 @@ async function reply(replyToken, text, userId) {
                     userId: userId,
                     replyToken: replyToken,
                 })
-            ).toString("base64");
+            ).toString("hex");
             body.messages[0] = {
                 type: "flex",
                 altText: "สมัครอาสาสมัคร",
