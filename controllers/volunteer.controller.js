@@ -56,7 +56,7 @@ const createVolunteers = async function (req, res) {
             !reqData.otherContact ||
             !reqData.phone ||
             !reqData.province ||
-            !uri_decoded.userId 
+            !uri_decoded.userId
         )
             return res.status(200).json({
                 status: "error",
@@ -93,8 +93,32 @@ const createVolunteers = async function (req, res) {
                         {
                             type: "text",
                             text:
-                                "🙏 ทางเราขอขอบคุณ ท่านที่สละเวลาอันมีค่าเพื่อช่วยเหลือคนอื่น",
+                                "🙏 ทางเราขอขอบคุณ ท่านที่สละเวลาอันมีค่าเพื่อช่วยเหลือคนอื่น\nหากต้องการแก้ไขข้อมูล กรุณากดปุ่มด้านล่าง 👇👇👇",
                         },
+                        {
+                            type: "flex",
+                            altText: "แก้ไขข้อมูลอาสาสมัคร",
+                            contents: {
+                                type: "bubble",
+                                body: {
+                                    type: "box",
+                                    layout: "vertical",
+                                    contents: [
+                                        {
+                                            type: "button",
+                                            style: "primary",
+                                            color: "#FFBD33",
+                                            height: "sm",
+                                            action: {
+                                                type: "uri",
+                                                label: "🙌 กดปุ่มเพื่อแก้ไขข้อมูลอาสาสมัคร",
+                                                uri: `https://arsa-prompt.alonecoding.com/v1/pages/editprofile/${randId}`,
+                                            },
+                                        },
+                                    ],
+                                },
+                            }
+                        }
                     ],
                 }),
             });
