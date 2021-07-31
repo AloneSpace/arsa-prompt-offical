@@ -33,25 +33,24 @@ async function reply(replyToken, text, userId) {
             let data = await covidStats();
             body.messages[0] = {
                 type: "text",
-                text: `⌚️ ข้อมูลเมื่อ ${
-                    data.UpdateDate
-                }\n\n==========================\n\n➕ ผู้ติดเชื้อสะสม ${thousand_separator(
-                    data.cases
-                )} คน\n\n💊 รักษาหายสะสม ${thousand_separator(
-                    data.recovered
-                )} คน\n\n🏥 กำลังรักษา ${thousand_separator(
-                    data.active
-                )} คน\n\n🪦 ผู้เสียชีวิตทั้งหมด ${thousand_separator(
-                    data.deaths
-                )} คน\n\n🦠 ผู้ติดเชื้อวันนี้ ${thousand_separator(
-                    data.todayCases
-                )} คน\n\n😀 รักษาหายวันนี้ ${thousand_separator(
-                    data.todayRecovered
-                )} คน\n\n🤢 อาการรุนแรง ${thousand_separator(
-                    data.critical
-                )} คน\n\n💀 ผู้เสียชีวิตวันนี้ ${thousand_separator(
-                    data.todayDeaths
-                )} คน`,
+                text: `⌚️ ข้อมูลเมื่อ ${data.UpdateDate
+                    }\n\n==========================\n\n➕ ผู้ติดเชื้อสะสม ${thousand_separator(
+                        data.cases
+                    )} คน\n\n💊 รักษาหายสะสม ${thousand_separator(
+                        data.recovered
+                    )} คน\n\n🏥 กำลังรักษา ${thousand_separator(
+                        data.active
+                    )} คน\n\n🪦 ผู้เสียชีวิตทั้งหมด ${thousand_separator(
+                        data.deaths
+                    )} คน\n\n🦠 ผู้ติดเชื้อวันนี้ ${thousand_separator(
+                        data.todayCases
+                    )} คน\n\n😀 รักษาหายวันนี้ ${thousand_separator(
+                        data.todayRecovered
+                    )} คน\n\n🤢 อาการรุนแรง ${thousand_separator(
+                        data.critical
+                    )} คน\n\n💀 ผู้เสียชีวิตวันนี้ ${thousand_separator(
+                        data.todayDeaths
+                    )} คน`,
             };
             break;
         case "ขอความช่วยเหลือ":
@@ -67,6 +66,11 @@ async function reply(replyToken, text, userId) {
                 })
             ).toString("hex");
             let users = await fetchVolunteersByUserId(userId);
+            let uri = `https://arsa-prompt.alonecoding.com/v1/pages/register/${encodeURI(uri_encoded)}`;
+            if (users.length) {
+                let secretid = users[0].secret;
+                uri = `https://arsa-prompt.alonecoding.com/v1/pages/editprofile/${secretid}`
+            }
             body.messages[0] = {
                 type: "flex",
                 altText: "สมัครอาสาสมัคร",
@@ -79,18 +83,14 @@ async function reply(replyToken, text, userId) {
                             {
                                 type: "button",
                                 style: "primary",
-                                color: users.length ? "#FFBD33" : "",
+                                color: users.length ? "#FFBD33" : null,
                                 height: "sm",
                                 action: {
                                     type: "uri",
                                     label: users.length
                                         ? "🙌 กดปุ่มเพื่อแก้ไขข้อมูลอาสาสมัคร"
                                         : "🙌 กดปุ่มเพื่อสมัครอาสา",
-                                    uri: `https://arsa-prompt.alonecoding.com/v1/pages/${
-                                        users.length
-                                            ? "editprofile"
-                                            : "register"
-                                    }/${encodeURI(uri_encoded)}`,
+                                    uri: uri,
                                 },
                             },
                         ],
