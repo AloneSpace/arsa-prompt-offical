@@ -83,7 +83,7 @@ async function reply(replyToken, text, userId) {
                             {
                                 type: "button",
                                 style: "primary",
-                                color: users.length ? "#FFBD33" : "#A6F7C3",
+                                color: users.length ? "#FFBD33" : "#17c950",
                                 height: "sm",
                                 action: {
                                     type: "uri",
