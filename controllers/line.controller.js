@@ -14,7 +14,6 @@ const { thousand_separator } = require("../utils/convert");
 
 exports.line_controller = async function (req, res) {
     try {
-        console.log(req.body);
         let replyToken = req.body.events[0].replyToken;
         await reply(
             replyToken,
@@ -29,7 +28,6 @@ exports.line_controller = async function (req, res) {
 
 async function reply(replyToken, text, userId) {
     let body = { replyToken: replyToken, messages: [{}] };
-    console.log(text);
     switch (text) {
         case "สถานการณ์โควิดวันนี้":
             let data = await covidStats();
@@ -85,7 +83,7 @@ async function reply(replyToken, text, userId) {
                                 action: {
                                     type: "uri",
                                     label: "🙌 กดปุ่มเพื่อสมัครอาสา", //TODO: มาแก้ URL ตอน Production
-                                    uri: `https://arsa-prompt.alonecoding.com/v1/pages/register?id=${encodeURI(
+                                    uri: `https://arsa-prompt.alonecoding.com/v1/pages/register/${encodeURI(
                                         uri_encoded
                                     )}`,
                                 },
