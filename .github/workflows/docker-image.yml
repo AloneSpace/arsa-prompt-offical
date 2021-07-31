@@ -22,7 +22,7 @@ jobs:
               shell: bash
               env:
                   FIREBASE_CONFIG: ${{secrets.FIREBASE_CONFIG}}
-            - name: Build the Docker image
-              run: docker build . --file Dockerfile --tag arsa-prompt
+            # - name: Build the Docker image
+            #   run: docker build . --file Dockerfile --tag arsa-prompt
             - name: Run container
               run: docker run -p 3002:3002 --rm -d --network backend --name arsa-prompt arsa-prompt
