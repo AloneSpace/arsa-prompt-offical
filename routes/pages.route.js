@@ -5,5 +5,6 @@ module.exports = (express) => {
 
     route.get("/", controller.index);
     route.get("/register/:data", controller.register);
+    route.get("/editprofile/:secretId",controller.editprofile);
     return route;
 };
