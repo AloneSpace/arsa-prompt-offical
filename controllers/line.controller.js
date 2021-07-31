@@ -68,7 +68,7 @@ async function reply(replyToken, text, userId) {
             let users = await fetchVolunteersByUserId(userId);
             let uri = `https://arsa-prompt.alonecoding.com/v1/pages/register/${encodeURI(uri_encoded)}`;
             if (users.length) {
-                let secretid = users[0].secret;
+                let secretid = users[0].secretId;
                 uri = `https://arsa-prompt.alonecoding.com/v1/pages/editprofile/${secretid}`
             }
             body.messages[0] = {
@@ -83,7 +83,7 @@ async function reply(replyToken, text, userId) {
                             {
                                 type: "button",
                                 style: "primary",
-                                color: users.length ? "#FFBD33" : null,
+                                color: users.length ? "#FFBD33" : "#A6F7C3",
                                 height: "sm",
                                 action: {
                                     type: "uri",
