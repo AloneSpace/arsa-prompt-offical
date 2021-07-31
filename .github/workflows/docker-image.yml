@@ -24,4 +24,4 @@ jobs:
             - name: Build the Docker image
               run: docker build . --file Dockerfile --tag arsa-prompt
             - name: Run container
-              run: docker run -p 3002:3002 -d arsa-prompt
+              run: docker run -p 3002:3002 -d arsa-prompt --name arsa-prompt
