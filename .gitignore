@@ -1,6 +1,6 @@
 .env
 yarn.lock
 node_modules/
-config/
+config/arsa-prompt-offical-firebase-adminsdk-aov6q-764569afd3.json
 package-lock.json
 test/
