@@ -3,3 +3,4 @@ yarn.lock
 node_modules/
 config/
 package-lock.json
+test/
