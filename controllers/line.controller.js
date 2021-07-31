@@ -1,6 +1,5 @@
 const axios = require("axios");
 const { provinces } = require("../config/thailand");
-
 let headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${process.env.LINE_TOKEN}`,
@@ -9,6 +8,7 @@ let headers = {
 const { covidStats } = require("../controllers/stats.controller");
 const {
     fetchVolunteersByProvince,
+    fetchVolunteersByUserId,
 } = require("../controllers/volunteer.controller");
 const { thousand_separator } = require("../utils/convert");
 
@@ -63,9 +63,10 @@ async function reply(replyToken, text, userId) {
         case "สมัครอาสา":
             let uri_encoded = Buffer.from(
                 JSON.stringify({
-                    userId: userId
+                    userId: userId,
                 })
             ).toString("hex");
+            let users = await fetchVolunteersByUserId(userId);
             body.messages[0] = {
                 type: "flex",
                 altText: "สมัครอาสาสมัคร",
@@ -78,13 +79,18 @@ async function reply(replyToken, text, userId) {
                             {
                                 type: "button",
                                 style: "primary",
+                                color: users.length ? "#FFBD33" : "",
                                 height: "sm",
                                 action: {
                                     type: "uri",
-                                    label: "🙌 กดปุ่มเพื่อสมัครอาสา", //TODO: มาแก้ URL ตอน Production
-                                    uri: `https://arsa-prompt.alonecoding.com/v1/pages/register/${encodeURI(
-                                        uri_encoded
-                                    )}`,
+                                    label: users.length
+                                        ? "🙌 กดปุ่มเพื่อแก้ไขข้อมูลอาสาสมัคร"
+                                        : "🙌 กดปุ่มเพื่อสมัครอาสา",
+                                    uri: `https://arsa-prompt.alonecoding.com/v1/pages/${
+                                        users.length
+                                            ? "editprofile"
+                                            : "register"
+                                    }/${encodeURI(uri_encoded)}`,
                                 },
                             },
                         ],

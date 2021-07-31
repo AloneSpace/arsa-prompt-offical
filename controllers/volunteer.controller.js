@@ -231,4 +231,5 @@ module.exports = {
     findVolunteersByProvince,
     fetchVolunteersBySecretId,
     findVolunteersBySecretId,
+    fetchVolunteersByUserId,
 };
