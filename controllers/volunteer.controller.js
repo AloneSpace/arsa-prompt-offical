@@ -5,19 +5,37 @@ const { randid } = require("../utils/randomId");
 
 const getAllVolunteers = async function (req, res) {
     const volunteers = await fetchVolunteers();
-    if (!volunteers.length) return res.status(404).json("No Data Found");
+    if (!volunteers.length) return res.status(404).json({
+        "status": "error",
+        "message": "No Data founded"
+    });
     return res.status(200).json(volunteers);
 };
 
 const findVolunteersByProvince = async function (req, res) {
     const volunteers = await fetchVolunteersByProvince(req.params.province);
-    if (!volunteers.length) return res.status(404).json("No Data Found");
+    if (!volunteers.length) return res.status(404).json({
+        "status": "error",
+        "message": "No Data founded"
+    });
     return res.status(200).json(volunteers);
 };
 
 const findVolunteersByUserId = async function (req, res) {
     const volunteers = await await fetchVolunteersByUserId(req.body.userId);
-    if (!volunteers.length) return res.status(404).json("No Data Found");
+    if (!volunteers.length) return res.status(404).json({
+        "status": "error",
+        "message": "No Data founded"
+    });
+    return res.status(200).json(volunteers);
+};
+
+const findVolunteersBySecretId = async function (req, res) {
+    const volunteers = await fetchVolunteersBySecretId(req.params.secretId);
+    if (!volunteers.length) return res.status(404).json({
+        "status": "error",
+        "message": "No Data founded"
+    });
     return res.status(200).json(volunteers);
 };
 
@@ -99,6 +117,44 @@ const createVolunteers = async function (req, res) {
 
 };
 
+const updateVolunteers = async function (req, res) {
+    let reqData = req.body;
+    let paramsData = req.params
+    let userdata = await fetchVolunteersBySecretId(paramsData.secret);
+    if (!userdata.length) return res.status(404).json({
+        "status": "error",
+        "message": "No Data founded"
+    });
+    if (
+        !reqData.address ||
+        !reqData.name ||
+        !reqData.otherContact ||
+        !reqData.phone ||
+        !reqData.province
+    )
+        return res.status(200).json({
+            status: "error",
+            message: "Fill the form",
+        });
+    let data = {
+        address: reqData.address,
+        name: reqData.name,
+        otherContact: reqData.otherContact,
+        phone: reqData.phone,
+        province: reqData.province,
+    };
+    try {
+        const response = await volunteersRef.doc(userdata[0].id).set(data, { merge: true });
+        res.status(201).json({
+            status : "success",
+            message : "Updated Data"
+        })
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 const fetchVolunteers = async function () {
     const docs = await volunteersRef.get();
     if (docs.empty) return [];
@@ -128,11 +184,23 @@ const fetchVolunteersByUserId = async function (userId) {
     });
     return tempData;
 };
+const fetchVolunteersBySecretId = async function (secretId) {
+    const docs = await volunteersRef.where("secretId", "==", secretId).get();
+    if (docs.empty) return [];
+    let tempData = [];
+    docs.forEach((doc) => {
+        tempData.push({ "id": doc.id, "data": doc.data() });
+    });
+    return tempData;
+};
 
 module.exports = {
     createVolunteers,
+    updateVolunteers,
     getAllVolunteers,
     fetchVolunteers,
     fetchVolunteersByProvince,
     findVolunteersByProvince,
+    fetchVolunteersBySecretId,
+    findVolunteersBySecretId
 };
