@@ -5,37 +5,41 @@ const { randid } = require("../utils/randomId");
 
 const getAllVolunteers = async function (req, res) {
     const volunteers = await fetchVolunteers();
-    if (!volunteers.length) return res.status(404).json({
-        "status": "error",
-        "message": "No Data founded"
-    });
+    if (!volunteers.length)
+        return res.status(404).json({
+            status: "error",
+            message: "No Data founded",
+        });
     return res.status(200).json(volunteers);
 };
 
 const findVolunteersByProvince = async function (req, res) {
     const volunteers = await fetchVolunteersByProvince(req.params.province);
-    if (!volunteers.length) return res.status(404).json({
-        "status": "error",
-        "message": "No Data founded"
-    });
+    if (!volunteers.length)
+        return res.status(404).json({
+            status: "error",
+            message: "No Data founded",
+        });
     return res.status(200).json(volunteers);
 };
 
 const findVolunteersByUserId = async function (req, res) {
     const volunteers = await await fetchVolunteersByUserId(req.body.userId);
-    if (!volunteers.length) return res.status(404).json({
-        "status": "error",
-        "message": "No Data founded"
-    });
+    if (!volunteers.length)
+        return res.status(404).json({
+            status: "error",
+            message: "No Data founded",
+        });
     return res.status(200).json(volunteers);
 };
 
 const findVolunteersBySecretId = async function (req, res) {
     const volunteers = await fetchVolunteersBySecretId(req.params.secretId);
-    if (!volunteers.length) return res.status(404).json({
-        "status": "error",
-        "message": "No Data founded"
-    });
+    if (!volunteers.length)
+        return res.status(404).json({
+            status: "error",
+            message: "No Data founded",
+        });
     return res.status(200).json(volunteers);
 };
 
@@ -73,7 +77,7 @@ const createVolunteers = async function (req, res) {
             otherContact: reqData.otherContact,
             phone: reqData.phone,
             province: reqData.province,
-            secretId: randId
+            secretId: randId,
         };
         try {
             await volunteersRef.add(data);
@@ -114,17 +118,17 @@ const createVolunteers = async function (req, res) {
             message: "URI wrong",
         });
     }
-
 };
 
 const updateVolunteers = async function (req, res) {
     let reqData = req.body;
-    let paramsData = req.params
+    let paramsData = req.params;
     let userdata = await fetchVolunteersBySecretId(paramsData.secret);
-    if (!userdata.length) return res.status(404).json({
-        "status": "error",
-        "message": "No Data founded"
-    });
+    if (!userdata.length)
+        return res.status(404).json({
+            status: "error",
+            message: "No Data founded",
+        });
     if (
         !reqData.address ||
         !reqData.name ||
@@ -144,16 +148,17 @@ const updateVolunteers = async function (req, res) {
         province: reqData.province,
     };
     try {
-        const response = await volunteersRef.doc(userdata[0].id).set(data, { merge: true });
+        const response = await volunteersRef
+            .doc(userdata[0].id)
+            .set(data, { merge: true });
         res.status(201).json({
-            status : "success",
-            message : "Updated Data"
-        })
+            status: "success",
+            message: "Updated Data",
+        });
     } catch (err) {
         console.log(err);
     }
-
-}
+};
 
 const fetchVolunteers = async function () {
     const docs = await volunteersRef.get();
@@ -189,7 +194,7 @@ const fetchVolunteersBySecretId = async function (secretId) {
     if (docs.empty) return [];
     let tempData = [];
     docs.forEach((doc) => {
-        tempData.push({ "id": doc.id, "data": doc.data() });
+        tempData.push({ id: doc.id, data: doc.data() });
     });
     return tempData;
 };
@@ -202,5 +207,5 @@ module.exports = {
     fetchVolunteersByProvince,
     findVolunteersByProvince,
     fetchVolunteersBySecretId,
-    findVolunteersBySecretId
+    findVolunteersBySecretId,
 };
