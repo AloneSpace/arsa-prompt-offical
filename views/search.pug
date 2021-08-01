@@ -13,11 +13,16 @@ block content
                         form(method="post", action="./result") 
                             .mb-3
                                 label.form-label(for='name' required) จังหวัด
-                                select#province.form-select.form-select-sm(name="province" aria-label='.form-select-sm example')
+                                select#province.form-select.form-select-sm(name="province" aria-label='.form-select-sm example' required)
                                     option(selected='') เลือกจังหวัด
                                     each p in provinces
                                         option(select=p )= p
                             .d-grid.gap-2 
                                 button.btn-sm.btn.btn-block.c-orange.text-white(type='submit')#confirmBtn ค้นหาตามจังหวัด
-                            
+                .card.shadow-sm.rounded.mt-1
+                    .card-body
+                        h5.text-center อาสาสมัครทั้งหมด
+                        .d-grid.gap-2 
+                            a.btn-sm.btn.btn-block.c-orange.text-white(href="./allvolunteers") อาสาสมัครทั้งหมด
+
 block scripts
