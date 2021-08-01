@@ -113,7 +113,7 @@ async function reply(replyToken, text, userId) {
                 if (!volunteers.length)
                     body.messages[1].text = `❌❌ ไม่พบอาสาสมัคร 😢😢`;
                 for (let [index, volunteer] of volunteers.entries()) {
-                    body.messages[1].text += `• ${volunteer.name}\n📞 ${volunteer.phone}\n🏠 ${volunteer.address}\n🌐 ช่องทารการติดต่ออื่นๆ \n${volunteer.otherContact}`;
+                    body.messages[1].text += `• ${volunteer.name}\n📞 ${volunteer.phone}\n🏠 ${volunteer.address}\n📝 หมายเหตุ \n${volunteer.note}`;
                     if (index !== volunteers.length - 1)
                         body.messages[1].text += "\n\n";
                 }

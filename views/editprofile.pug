@@ -22,8 +22,8 @@ block content
                                 label.form-label(for='name') เบอร์โทรศัพท์ติดต่อ
                                 input#tel.form-control.form-control-sm(type='text' name="" aria-describedby='nameHelp' placeholder="ใส่เบอร์โทรศัพท์ของคุณ" value=data.phone required)
                             .mb-3
-                                label.form-label(for='address') ช่องทางการติดต่ออื่นๆ
-                                textarea#otherContact(name="address", cols="30", rows="2",placeholder="กรอกช่องทางการติดต่ออื่นๆ").form-control= data.otherContact
+                                label.form-label(for='address') หมายเหตุอื่นๆ
+                                textarea#note(name="address", cols="30", rows="2",placeholder="กรอกหมายเหตุอื่นๆ").form-control= data.note
                             
                             .mb-3
                                 label.form-label(for='name' required) จังหวัด

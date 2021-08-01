@@ -53,7 +53,7 @@ const createVolunteers = async function (req, res) {
         if (
             !reqData.address ||
             !reqData.name ||
-            !reqData.otherContact ||
+            !reqData.note ||
             !reqData.phone ||
             !reqData.province ||
             !uri_decoded.userId
@@ -73,7 +73,7 @@ const createVolunteers = async function (req, res) {
             address: reqData.address,
             created_at: +new Date(),
             name: reqData.name,
-            otherContact: reqData.otherContact,
+            note: reqData.note,
             phone: reqData.phone,
             province: reqData.province,
             secretId: randId,
@@ -155,7 +155,7 @@ const updateVolunteers = async function (req, res) {
     if (
         !reqData.address ||
         !reqData.name ||
-        !reqData.otherContact ||
+        !reqData.note ||
         !reqData.phone ||
         !reqData.province
     )
@@ -166,7 +166,7 @@ const updateVolunteers = async function (req, res) {
     let data = {
         address: reqData.address,
         name: reqData.name,
-        otherContact: reqData.otherContact,
+        note: reqData.note,
         phone: reqData.phone,
         province: reqData.province,
     };

@@ -22,14 +22,12 @@ $(document).ready(() => {
                     name: $("#name").val(),
                     address: $("#address").val(),
                     phone: $("#tel").val(),
-                    otherContact: $("#otherContact").val(),
+                    note: $("#note").val(),
                     province: $("#province").val(),
                     uri : $("#uri").val()
                 }
-                console.log(dataSet);
                 axios.post('/v1/volunteers/create', dataSet)
                     .then(res => {
-                        console.log(res.data);
 
                         if (res.status == 201) return Swal.fire({
                             icon: 'success',
@@ -45,7 +43,6 @@ $(document).ready(() => {
                         })
                     })
                     .catch(err => {
-                        console.log(err.response.data);
                         Swal.fire({
                             icon: 'error',
                             title: 'ไม่สำเร็จ',
