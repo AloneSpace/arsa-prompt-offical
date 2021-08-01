@@ -22,19 +22,64 @@ block content
                                 label.form-label(for='name') เบอร์โทรศัพท์ติดต่อ
                                 input#tel.form-control.form-control-sm(type='text' name="" aria-describedby='nameHelp' placeholder="ใส่เบอร์โทรศัพท์ของคุณ" required)
                             .mb-3
-                                label.form-label(for='address') ช่องทางการติดต่ออื่นๆ
-                                textarea#otherContact(name="address", cols="30", rows="2",placeholder="กรอกช่องทางการติดต่ออื่นๆ").form-control
-                            
+                                label.form-label(for='note') หมายเหตุอื่นๆ
+                                textarea#note(name="note", cols="30", rows="2",placeholder="กรอกหมายเหตุอื่นๆ").form-control
+                                .form-text *หมายเหตุอื่นๆ คือสิ่งที่ต้องการเขียนเพิ่มเติม เช่น ช่องทางการติดต่ออื่นๆ เป็นต้น
                             .mb-3
                                 label.form-label(for='name' required) จังหวัด
                                 select#province.form-select.form-select-sm(aria-label='.form-select-sm example')
                                     option(selected='') เลือกจังหวัด
                                     each p in provinces
                                         option(select=p )= p
+                            .mb-3 
+                                .form-check
+                                    input#policyCheckbox.form-check-input(type='checkbox')
+                                    span.form-check-label(for='')
+                                        | ตกลงและยินยอมตาม 
+                                        span#policy.text-primary เงื่อนไข
+
                             .d-grid.gap-2 
-                                button.btn.btn-block.c-orange.text-white(type='button')#confirmBtn ยืนยันข้อมูล
+                                button.btn.btn-block.c-orange.text-white(type='button' disabled)#confirmBtn ยืนยันข้อมูล
                             input#uri(type="text", value=uri hidden) 
-                            
+                            #policyModal.modal(tabindex='-1')
+                                .modal-dialog.modal-dialog-centered.modal-dialog-scrollable
+                                    .modal-content
+                                        .modal-header
+                                            h5.modal-title เงื่อนไขและข้อตกลง
+                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                        .modal-body
+                                            p ผู้ขอสมัครสมาชิกซึงต่อไปนี้จะเรียกว่า 'ผู้สมัคร' และอาสาพร้อม ซึ่งต่อไปนี้จะ เรียกว่า 'อาสาพร้อม' กรุณาอ่านข้อความตกลงด้านล่างนี้โดยละเอียดเพื่อรักษาสิทธิประโยชน์ในการเป็นสมาชิกของท่านเงื่อนไข
+                                            p 1. อาสาพร้อม เป็นการความร่วมมือของนักพัฒนาอิสระ โดยไม่หวังผลตอบแทนใดๆทั้งสิ้น
+                                            p 2. การสมัครสมาชิก อาสาพร้อม ไม่ต้องเสียค่าใช้จ่ายใดๆ ทั้งสิ้น
+                                            p 3. ผู้สมัคร จะต้องกรอกข้อมูลรายละเอียดต่างๆ ตามจริงให้ครบถ้วน ทั้งนี้เพื่อประโยชน์แก่ตัวผู้สมัคร และประโยชน์ต่อผู้ใช้งานท่านอื่น
+                                            p 4. อาสาพร้อม จะนำข้อมูลที่ท่านกรอกประชาสัมพันธ์แก่สมาชิกท่านอื่นติดต่อผู้สมัคร เพื่อให้สมาชิกท่านอื่นสามารถติดต่อผู้สมัคร และเข้าช่วยเหลือได้อย่างทันท่วงที
+                                        .modal-footer.d-flex.justify-content-center
+                                            button#dismiss.btn.btn-outline-secondary(type='button' data-bs-dismiss='modal') ไม่ยินยอมเงื่อนไข
+                                            button#accept.btn.c-orange.text-white(type='button') ยินยอมเงื่อนไข
             
-block scripts 
+block scripts
+    script. 
+        $(document).ready(()=>{
+            var policyModal = new bootstrap.Modal(document.getElementById('policyModal'))
+
+            $("#policy").click(()=>{
+                policyModal.show();
+            })
+            $("#accept").click(()=>{
+                $("#policyCheckbox").prop('checked', true);
+                $("#confirmBtn").prop('disabled',false);
+                policyModal.hide();
+            })
+            $("#dismiss").click(()=>{
+                $("#policyCheckbox").prop('checked', false);
+                policyModal.hide();
+            })
+            $("#policyCheckbox").change(()=>{
+                if($("#policyCheckbox")[0].checked){
+                    $("#confirmBtn").prop('disabled',false);
+                }else{
+                    $("#confirmBtn").prop('disabled',true);
+                }
+            })
+        })
     script(src="/js/confirm.js") 
