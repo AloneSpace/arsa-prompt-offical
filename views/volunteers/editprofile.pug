@@ -37,5 +37,10 @@ block content
                             .d-grid.gap-2 
                                 button.btn.btn-block.c-orange.text-white(type='button')#confirmBtn ยืนยันการแก้ไขข้อมูล
                             input#secret(type="text", name="" value=data.secretId hidden)
+                            hr
+                            .d-grid.gap-2
+                                button.btn.btn-block.btn-danger.text-white(type='button')#deleteAccount ลบข้อมูลอาสาสมัคร
+
+
 block scripts 
     script(src="/js/update.js") 
