@@ -79,7 +79,6 @@ const createVolunteers = async function (req, res) {
             secretId: randId,
         };
         try {
-            await volunteersRef.add(data);
             await axios({
                 method: "post",
                 url: "https://api.line.me/v2/bot/message/push",
@@ -111,18 +110,19 @@ const createVolunteers = async function (req, res) {
                                             height: "sm",
                                             action: {
                                                 type: "uri",
-                                                label: "🙌 กดปุ่มเพื่อแก้ไขข้อมูลอาสาสมัคร",
+                                                label:
+                                                    "🙌 กดปุ่มเพื่อแก้ไขข้อมูลอาสาสมัคร",
                                                 uri: `https://arsa-prompt.alonecoding.com/v1/pages/editprofile/${randId}`,
                                             },
                                         },
                                     ],
                                 },
-                            }
-                        }
+                            },
+                        },
                     ],
                 }),
             });
-            // console.log(data);
+            await volunteersRef.add(data);
             return res.status(201).json({
                 status: "success",
                 message: "Create Success",
