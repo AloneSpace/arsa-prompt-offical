@@ -11,12 +11,12 @@ block content
                         h5.text-center ค้นหาอาสาสมัคร
                         hr
                         form(method="post", action="./result") 
-                            .mb-3
-                                label.form-label(for='name' required) จังหวัด
-                                select#province.form-select.form-select-sm(name="province" aria-label='.form-select-sm example' required)
-                                    option(selected='') เลือกจังหวัด
+                            .mb-3 
+                                label.form-label(for='provinces') จังหวัด
+                                input#provinces.form-control.form-control-sm(name="province" list='datalistOptions' placeholder='กรุณาใส่ชื่อจังหวัด' required)
+                                datalist#datalistOptions
                                     each p in provinces
-                                        option(select=p )= p
+                                        option(value=p )= p
                             .d-grid.gap-2 
                                 button.btn-sm.btn.btn-block.c-orange.text-white(type='submit')#confirmBtn ค้นหาตามจังหวัด
                 .card.shadow-sm.rounded.mt-1
