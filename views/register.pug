@@ -72,6 +72,7 @@ block scripts
             })
             $("#dismiss").click(()=>{
                 $("#policyCheckbox").prop('checked', false);
+                $("#confirmBtn").prop('disabled',true);
                 policyModal.hide();
             })
             $("#policyCheckbox").change(()=>{
