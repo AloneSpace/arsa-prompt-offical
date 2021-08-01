@@ -7,7 +7,11 @@ block content
         //- .row.mt-1
             .col 
                 small
+        
                     a(href="./search").text-decoration-none ← กลับหน้าค้นหา
+        .row
+            a(href="./search").btn.btn-sm.btn-primary
+                small.text-center.text-white ค้นหาอีกครั้งกดที่นี่
         .row
             div.btn.btn-sm.btn-warning ผลการค้นหา
                 .text-center
@@ -19,7 +23,7 @@ block content
             if datas.length
                 each data in datas 
                     .col-12
-                        div.card 
+                        div.card.mt-1 
                             .card-body 
                                 small 
                                     | ชื่อ : 
@@ -42,7 +46,5 @@ block content
                                     = data.province
             else 
                 small.text-center ไม่พบข้อมูลอาสาสมัคร
-        .row.mt-1
-            a(href="./search").text-center
-                small.text-center ค้นหาอีกครั้งกดที่นี่
+        
 block scripts
