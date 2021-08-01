@@ -1,0 +1,23 @@
+extends layout.pug
+block content
+    .container.p-3
+        .row 
+            .col-12 
+                img(src="/images/lg1.png").rounded.mx-auto.d-block.img-fluid
+        .row 
+            .col-12
+                .card.shadow-sm.rounded
+                    .card-body
+                        h5.text-center ค้นหาอาสาสมัคร
+                        hr
+                        form(method="post", action="./result") 
+                            .mb-3
+                                label.form-label(for='name' required) จังหวัด
+                                select#province.form-select.form-select-sm(name="province" aria-label='.form-select-sm example')
+                                    option(selected='') เลือกจังหวัด
+                                    each p in provinces
+                                        option(select=p )= p
+                            .d-grid.gap-2 
+                                button.btn-sm.btn.btn-block.c-orange.text-white(type='submit')#confirmBtn ค้นหาตามจังหวัด
+                            
+block scripts

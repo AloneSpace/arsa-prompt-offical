@@ -1,0 +1,48 @@
+extends layout.pug
+block content
+    .container-fluid
+        //- .row 
+            .col-12 
+                img(src="/images/lg1.png" width="50%").rounded.mx-auto.d-block.img-fluid
+        //- .row.mt-1
+            .col 
+                small
+                    a(href="./search").text-decoration-none ← กลับหน้าค้นหา
+        .row
+            div.btn.btn-sm.btn-warning ผลการค้นหา
+                .text-center
+                    | อาสาสมัครที่พบจำนวน 
+                    = datas.length 
+                    |  คน ในจังหวัด 
+                    = province
+        .row.mt-1 
+            if datas.length
+                each data in datas 
+                    .col-12
+                        div.card 
+                            .card-body 
+                                small 
+                                    | ชื่อ : 
+                                    = data.name
+                                br
+                                small
+                                    | ที่อยู่ : 
+                                    = data.address
+                                br
+                                small
+                                    | เบอร์โทรศัพท์ : 
+                                    a(href="tel:"+data.phone)= data.phone
+                                br
+                                small
+                                    | หมายเหตุ : 
+                                    = data.note
+                                br
+                                small
+                                    | จังหวัด : 
+                                    = data.province
+            else 
+                small.text-center ไม่พบข้อมูลอาสาสมัคร
+        .row.mt-1
+            a(href="./search").text-center
+                small.text-center ค้นหาอีกครั้งกดที่นี่
+block scripts
