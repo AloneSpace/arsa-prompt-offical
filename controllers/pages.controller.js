@@ -1,5 +1,5 @@
 const { provinces } = require('../config/thailand');
-const { fetchVolunteersBySecretId, fetchVolunteersByProvince,fetchVolunteers } = require("../controllers/volunteer.controller");
+const { fetchVolunteersBySecretId, fetchVolunteersByProvince, fetchVolunteers } = require("../controllers/volunteer.controller");
 let index = async (req, res) => {
     res.render('index');
 }
@@ -43,27 +43,38 @@ let search = async (req, res) => {
 }
 
 let searchVolunteers = async (req, res) => {
-    if (!req.body.province) return res.status(400).json({
+    if (!req.query.province) return res.status(400).json({
         "status": "error",
         "message": "Bad Request"
     });
-
-    let province = req.body.province;
+    let page = req.query.page ? req.query.page : 1;
+    let province = req.query.province;
     let data = [];
     try {
         data = await fetchVolunteersByProvince(province);
-        // console.log(data);
-        res.render("result", { datas: data, province });
-    } catch (error) {
+        let dataPerPage = 5;
+        let countVolunteers = data.length
+        let maxPage = Math.ceil(countVolunteers / dataPerPage);
+        maxPage = maxPage > 0 ? maxPage : 1;
+        data = data.slice(dataPerPage * page - dataPerPage, dataPerPage * page);
+        res.render("result", { countVolunteers, page, maxPage, datas: data, province });
+    } catch (err) {
         console.log(err);
     }
 }
-let allVolunteers = async (req, res)=>{
+let allVolunteers = async (req, res) => {
+    let page = req.query.page ? req.query.page : 1;
+    let province = "ทั้งหมด";
     let data = [];
     try {
         data = await fetchVolunteers();
-        res.render("result", { datas: data, province : "ทั้งหมด" });
-    } catch (error) {
+        let dataPerPage = 5;
+        let countVolunteers = data.length
+        let maxPage = Math.ceil(countVolunteers / dataPerPage);
+        maxPage = maxPage > 0 ? maxPage : 1;
+        data = data.slice(dataPerPage * page - dataPerPage, dataPerPage * page);
+        res.render("result", { countVolunteers, page, maxPage, datas: data, province });
+    } catch (err) {
         console.log(err);
     }
 }

@@ -12,7 +12,7 @@ block content
                     .card-body
                         h5.text-center ค้นหาอาสาสมัคร
                         hr
-                        form(method="post", action="./result") 
+                        form(method="get", action="./result") 
                             .mb-3 
                                 label.form-label(for='provinces') จังหวัด
                                 input#provinces.form-control.form-control-sm(name="province" list='datalistOptions' placeholder='กรุณาใส่ชื่อจังหวัด' required)

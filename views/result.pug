@@ -16,9 +16,11 @@ block content
             div.btn.btn-sm.btn-warning ผลการค้นหา
                 .text-center
                     | อาสาสมัครที่พบจำนวน 
-                    = datas.length 
+                    = countVolunteers 
                     |  คน ในจังหวัด 
                     = province
+        .row
+            div.btn.btn-sm.btn-outline-secondary.disabled แสดงผลหน้า #{page} จาก #{maxPage}
         .row.mt-1 
             if datas.length
                 each data in datas 
@@ -44,6 +46,26 @@ block content
                                 small
                                     | จังหวัด : 
                                     = data.province
+                .col-12.d-flex.justify-content-center.mt-1 
+                    nav(aria-label='Page navigation example')
+                        ul.pagination
+                            li.page-item
+                                a.page-link(href='?province='+province+'&page=1' aria-label='Previous')
+                                    span(aria-hidden='true') &laquo;
+                            - var prePage =  (page-1);
+                            if prePage > 0
+                                li.page-item
+                                    a.page-link(href='?province='+province+'&page='+prePage)= prePage
+                            li.page-item.active(aria-current="page")
+                                a.page-link(href='?province='+province+'&page='+page)= page
+                            - var nextPage = (page-(-1));
+                            if nextPage <= maxPage
+                                li.page-item
+                                    a.page-link(href='?province='+province+'&page='+nextPage)= nextPage
+                            li.page-item
+                                a.page-link(href='?province='+province+'&page='+maxPage aria-label='Next')
+                                    span(aria-hidden='true') &raquo;
+
             else 
                 small.text-center ไม่พบข้อมูลอาสาสมัคร
         

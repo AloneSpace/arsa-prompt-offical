@@ -7,7 +7,7 @@ module.exports = (express) => {
     route.get("/register/:data", controller.register);
     route.get("/editprofile/:secretId", controller.editprofile);
     route.get("/search", controller.search);
-    route.post("/result", controller.searchVolunteers);
+    route.get("/result", controller.searchVolunteers);
     route.get("/allvolunteers", controller.allVolunteers);
 
     return route;
