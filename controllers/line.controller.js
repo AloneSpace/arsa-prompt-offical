@@ -29,36 +29,36 @@ exports.line_controller = async function (req, res) {
 async function reply(replyToken, text, userId) {
     let body = { replyToken: replyToken, messages: [{}] };
     switch (text) {
-        case "สถานการณ์โควิดวันนี้":
-            let data = await covidStats();
-            body.messages[0] = {
-                type: "text",
-                text: `⌚️ ข้อมูลเมื่อ ${data.UpdateDate
-                    }\n\n==========================\n\n➕ ผู้ติดเชื้อสะสม ${thousand_separator(
-                        data.cases
-                    )} คน\n\n💊 รักษาหายสะสม ${thousand_separator(
-                        data.recovered
-                    )} คน\n\n🏥 กำลังรักษา ${thousand_separator(
-                        data.active
-                    )} คน\n\n🪦 ผู้เสียชีวิตทั้งหมด ${thousand_separator(
-                        data.deaths
-                    )} คน\n\n🦠 ผู้ติดเชื้อวันนี้ ${thousand_separator(
-                        data.todayCases
-                    )} คน\n\n😀 รักษาหายวันนี้ ${thousand_separator(
-                        data.todayRecovered
-                    )} คน\n\n🤢 อาการรุนแรง ${thousand_separator(
-                        data.critical
-                    )} คน\n\n💀 ผู้เสียชีวิตวันนี้ ${thousand_separator(
-                        data.todayDeaths
-                    )} คน`,
-            };
-            break;
-        case "ขอความช่วยเหลือ":
-            body.messages[0] = {
-                type: "text",
-                text: "🔍 กรุณาพิมพ์ชื่อจังหวัด",
-            };
-            break;
+        // case "สถานการณ์โควิดวันนี้":
+        //     let data = await covidStats();
+        //     body.messages[0] = {
+        //         type: "text",
+        //         text: `⌚️ ข้อมูลเมื่อ ${data.UpdateDate
+        //             }\n\n==========================\n\n➕ ผู้ติดเชื้อสะสม ${thousand_separator(
+        //                 data.cases
+        //             )} คน\n\n💊 รักษาหายสะสม ${thousand_separator(
+        //                 data.recovered
+        //             )} คน\n\n🏥 กำลังรักษา ${thousand_separator(
+        //                 data.active
+        //             )} คน\n\n🪦 ผู้เสียชีวิตทั้งหมด ${thousand_separator(
+        //                 data.deaths
+        //             )} คน\n\n🦠 ผู้ติดเชื้อวันนี้ ${thousand_separator(
+        //                 data.todayCases
+        //             )} คน\n\n😀 รักษาหายวันนี้ ${thousand_separator(
+        //                 data.todayRecovered
+        //             )} คน\n\n🤢 อาการรุนแรง ${thousand_separator(
+        //                 data.critical
+        //             )} คน\n\n💀 ผู้เสียชีวิตวันนี้ ${thousand_separator(
+        //                 data.todayDeaths
+        //             )} คน`,
+        //     };
+        //     break;
+        // case "ขอความช่วยเหลือ":
+        //     body.messages[0] = {
+        //         type: "text",
+        //         text: "🔍 กรุณาพิมพ์ชื่อจังหวัด",
+        //     };
+        //     break;
         case "สมัครอาสา":
             let uri_encoded = Buffer.from(
                 JSON.stringify({
@@ -98,31 +98,31 @@ async function reply(replyToken, text, userId) {
                 },
             };
             break;
-        default:
-            let province = provinces.filter((prov) => prov.includes(text));
-            if (province.length) {
-                let volunteers = await fetchVolunteersByProvince(province[0]);
-                body.messages[0] = {
-                    type: "text",
-                    text: `📌 จังหวัดที่คุณเลือก ${province[0]} (${volunteers.length} คน)`,
-                };
-                body.messages[1] = {
-                    type: "text",
-                    text: "",
-                };
-                if (!volunteers.length)
-                    body.messages[1].text = `❌❌ ไม่พบอาสาสมัคร 😢😢`;
-                for (let [index, volunteer] of volunteers.entries()) {
-                    body.messages[1].text += `• ${volunteer.name}\n📞 ${volunteer.phone}\n🏠 ${volunteer.address}\n📝 หมายเหตุ \n${volunteer.note}`;
-                    if (index !== volunteers.length - 1)
-                        body.messages[1].text += "\n\n";
-                }
-            } else
-                body.messages[0] = {
-                    type: "text",
-                    text: `🧐 เราไม่พบจังหวัดนี้ในประเทศไทย`,
-                };
-            break;
+        // default:
+        //     let province = provinces.filter((prov) => prov.includes(text));
+        //     if (province.length) {
+        //         let volunteers = await fetchVolunteersByProvince(province[0]);
+        //         body.messages[0] = {
+        //             type: "text",
+        //             text: `📌 จังหวัดที่คุณเลือก ${province[0]} (${volunteers.length} คน)`,
+        //         };
+        //         body.messages[1] = {
+        //             type: "text",
+        //             text: "",
+        //         };
+        //         if (!volunteers.length)
+        //             body.messages[1].text = `❌❌ ไม่พบอาสาสมัคร 😢😢`;
+        //         for (let [index, volunteer] of volunteers.entries()) {
+        //             body.messages[1].text += `• ${volunteer.name}\n📞 ${volunteer.phone}\n🏠 ${volunteer.address}\n📝 หมายเหตุ \n${volunteer.note}`;
+        //             if (index !== volunteers.length - 1)
+        //                 body.messages[1].text += "\n\n";
+        //         }
+        //     } else
+        //         body.messages[0] = {
+        //             type: "text",
+        //             text: `🧐 เราไม่พบจังหวัดนี้ในประเทศไทย`,
+        //         };
+        //     break;
     }
     await axios({
         method: "post",
