@@ -128,14 +128,14 @@ const createVolunteers = async function (req, res) {
                 message: "Create Success",
             });
         } catch (err) {
-            // console.log(err);
+            console.log(err);
             return res.status(400).json({
                 status: "error",
                 message: "Something wrong ",
             });
         }
     } catch (err) {
-        // console.log(err);
+        console.log(err);
         return res.status(400).json({
             status: "error",
             message: "URI wrong",
@@ -174,14 +174,69 @@ const updateVolunteers = async function (req, res) {
         const response = await volunteersRef
             .doc(userdata[0].id)
             .set(data, { merge: true });
-        res.status(201).json({
+        return res.status(201).json({
             status: "success",
             message: "Updated Data",
         });
     } catch (err) {
         console.log(err);
+        return res.status(400).json({
+            status: "error",
+            message: "Something Wrong",
+        });
     }
 };
+
+const deleteVolunteers = async function (req, res) {
+    let reqData = req.body;
+    if (!reqData.secretid || !reqData.docid) return res.status(400).json({
+        "status": "error",
+        "message": "Bad Request"
+    })
+    let data = await fetchVolunteersBySecretId(reqData.secretid);
+    if (!data.length) return res.status(400).json({
+        "status": "error",
+        "message": "User Not Found"
+    });
+    data = data[0];
+    if (reqData.docid != data.id) return res.status(400).json({
+        "status": "error",
+        "message": "Doc Id isn't match"
+    });
+    try {
+        const result = await volunteersRef.doc(data.id).delete();
+        console.log(result);
+        await axios({
+            method: "post",
+            url: "https://api.line.me/v2/bot/message/push",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.LINE_TOKEN}`,
+            },
+            data: JSON.stringify({
+                to: data.data.userId,
+                messages: [
+                    {
+                        type: "text",
+                        text:
+                            "การลบข้อมูลอาสาสมัครของคุณดำเนินการเรียบร้อยแล้ว ขอขอบคุณที่สละเวลาอันมีค่าเพื่อส่วนรวม 🙏🙏",
+                    }
+                ],
+            }),
+        });
+        return res.status(201).json({
+            status: "success",
+            message: "Delete Volunteer Success",
+        });
+
+    } catch (err) {
+        return res.status(400).json({
+            status: "success",
+            message: "Delete Volunteer Unsuccessful",
+        });
+    }
+
+}
 
 const fetchVolunteers = async function () {
     const docs = await volunteersRef.get();
@@ -232,4 +287,5 @@ module.exports = {
     fetchVolunteersBySecretId,
     findVolunteersBySecretId,
     fetchVolunteersByUserId,
+    deleteVolunteers
 };

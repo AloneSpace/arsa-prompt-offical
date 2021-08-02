@@ -8,5 +8,6 @@ module.exports = (express) => {
     route.post("/create", controller.createVolunteers);
     // route.get("/find/secret/:secretId",controller.findVolunteersBySecretId)
     route.post("/update/:secret", controller.updateVolunteers);
+    route.post("/delete/", controller.deleteVolunteers);
     return route;
 };

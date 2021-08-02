@@ -43,4 +43,62 @@ block content
 
 
 block scripts 
-    script(src="/js/update.js") 
+    script(src="/js/update.js")
+    script.
+        $(document).ready(() => {
+            $("#deleteAccount").click(async () => {
+                let docid = "#{id}";
+                let secretid = "#{data.secretId}"
+                let volunteersName = $("#name").val().trim();
+                const { value: name } = await Swal.fire({
+                    title: 'ยืนยันการลบข้อมูลอาสาสมัคร',
+                    input: 'text',
+                    inputLabel: 'โปรดกรอกชื่อคุณอีกครั้ง ' + volunteersName,
+                    inputPlaceholder: 'ใส่ชื่อของคุณ',
+                    confirmButtonColor: '#dba01f',
+                    confirmButtonText: 'ยืนยัน',
+                })
+
+                if (name == volunteersName.trim()) {
+                    let dataSet = {
+                        docid,
+                        secretid
+                    }
+                    console.log(dataSet);
+                    axios.post('/v1/volunteers/delete', dataSet)
+                        .then(res => {
+                            if (res.status == 201) return Swal.fire({
+                                icon: 'success',
+                                title: 'ลบสำเร็จ',
+                                text: 'ลบข้อมูลอาสาสมัครสำเร็จ',
+                                confirmButtonColor: '#dba01f',
+                                confirmButtonText: 'ยืนยัน',
+                            })
+                            return Swal.fire({
+                                icon: 'error',
+                                title: 'ไม่สำเร็จ',
+                                text: res.data.message,
+                                confirmButtonColor: '#dba01f',
+                            })
+                        })
+                        .catch(err => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'ไม่สำเร็จ',
+                                text: err.response.data.message,
+                                confirmButtonColor: '#dba01f',
+                            })
+                        })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ไม่สำเร็จ',
+                        text: 'ลบไม่สำเร็จ เนื่องจากชื่อไม่ตรงกัน',
+                        confirmButtonColor: '#dba01f',
+                        confirmButtonText: 'ยืนยัน',
+                    })
+                }
+            })
+        })
+        
+        

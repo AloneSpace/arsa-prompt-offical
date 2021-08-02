@@ -32,7 +32,7 @@ let editprofile = async (req, res) => {
             "status": "error",
             "message": "User Not Found"
         })
-        res.render('volunteers/editprofile', { provinces: provinces, data: userdata[0].data });
+        res.render('volunteers/editprofile', { provinces: provinces, data: userdata[0].data, id : userdata[0].id });
     } catch (err) {
         res.status(404).send("Something Wrong");
     }

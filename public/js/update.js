@@ -45,33 +45,4 @@ $(document).ready(() => {
             }
         })
     });
-    $("#deleteAccount").click(async () => {
-        let volunteersName = $("#name").val().trim();
-        const { value: name } = await Swal.fire({
-            title: 'ยืนยันการลบข้อมูลอาสาสมัคร',
-            input: 'text',
-            inputLabel: 'โปรดกรอกชื่อคุณอีกครั้ง ' + volunteersName,
-            inputPlaceholder: 'ใส่ชื่อของคุณ',
-            confirmButtonColor: '#dba01f',
-            confirmButtonText: 'ยืนยัน',
-        })
-
-        if (name == volunteersName.trim()) {
-            Swal.fire({
-                icon: 'success',
-                title: 'ลบสำเร็จ',
-                text: 'ลบข้อมูลอาสาสมัครสำเร็จ',
-                confirmButtonColor: '#dba01f',
-                confirmButtonText: 'ยืนยัน',
-            })
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'ไม่สำเร็จ',
-                text: 'ลบไม่สำเร็จ เนื่องจากชื่อไม่ตรงกัน',
-                confirmButtonColor: '#dba01f',
-                confirmButtonText: 'ยืนยัน',
-            })
-        }
-    })
 })
