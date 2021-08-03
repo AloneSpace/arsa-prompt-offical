@@ -311,4 +311,5 @@ module.exports = {
     fetchVolunteersByUserId,
     deleteVolunteers,
     getAllOtherResources,
+    fetchOtherResources
 };

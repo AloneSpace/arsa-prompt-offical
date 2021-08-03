@@ -17,7 +17,7 @@ block content
                 .text-center
                     | อาสาสมัครที่พบจำนวน 
                     = countVolunteers 
-                    |  คน ในจังหวัด 
+                    |  คนใน 
                     = province
         .row
             div.btn.btn-sm.btn-outline-secondary.disabled แสดงผลหน้า #{page} จาก #{maxPage}
@@ -26,26 +26,45 @@ block content
                 each data in datas 
                     .col-12
                         div.card.mt-1 
-                            .card-body 
-                                small 
-                                    | ชื่อ : 
-                                    = data.name
+                            .card-body
+                                if data.name 
+                                    small 
+                                        | ชื่อ : 
+                                        = data.name
                                 br
-                                small
-                                    | ที่อยู่ : 
-                                    = data.address
-                                br
-                                small
-                                    | เบอร์โทรศัพท์ : 
-                                    a(href="tel:"+data.phone)= data.phone
-                                br
-                                small
-                                    | หมายเหตุ : 
-                                    = data.note
-                                br
-                                small
-                                    | จังหวัด : 
-                                    = data.province
+                                if data.address 
+                                    small
+                                        | ที่อยู่ : 
+                                        = data.address
+                                    br
+                                if data.phone
+                                    small
+                                        | เบอร์โทรศัพท์ : 
+                                        each p in data.phone 
+                                            a(href="tel:"+p)= p
+                                            span ,&nbsp;
+                                    br
+                                if data.note
+                                    small
+                                        | หมายเหตุ : 
+                                        = data.note
+                                    br
+                                if data.province
+                                    small
+                                        | จังหวัด : 
+                                        = data.province
+                                    br
+                                if data.url 
+                                    small 
+                                        span อื่นๆ :
+                                        ul 
+                                            each u in data.url 
+                                                li
+                                                    span
+                                                        = u.platform  
+                                                        |  : 
+                                                        a(href=u.url, target="_blank")= u.label
+                                    br
                 .col-12.d-flex.justify-content-center.mt-1 
                     nav(aria-label='Page navigation example')
                         ul.pagination

@@ -9,6 +9,6 @@ module.exports = (express) => {
     route.get("/search", controller.search);
     route.get("/result", controller.searchVolunteers);
     route.get("/allvolunteers", controller.allVolunteers);
-
+    route.get("/other_resource", controller.otherResource)
     return route;
 };

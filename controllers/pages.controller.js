@@ -1,5 +1,5 @@
 const { provinces } = require('../config/thailand');
-const { fetchVolunteersBySecretId, fetchVolunteersByProvince, fetchVolunteers } = require("../controllers/volunteer.controller");
+const { fetchVolunteersBySecretId, fetchVolunteersByProvince, fetchVolunteers, fetchOtherResources } = require("../controllers/volunteer.controller");
 let index = async (req, res) => {
     res.render('index');
 }
@@ -78,11 +78,29 @@ let allVolunteers = async (req, res) => {
         console.log(err);
     }
 }
+
+let otherResource = async (req, res) =>{
+    let page = req.query.page ? req.query.page : 1;
+    let province = "แหล่งข้อมูลอื่นๆ";
+    let data = [];
+    try {
+        data = await fetchOtherResources();
+        let dataPerPage = 5;
+        let countVolunteers = data.length
+        let maxPage = Math.ceil(countVolunteers / dataPerPage);
+        maxPage = maxPage > 0 ? maxPage : 1;
+        data = data.slice(dataPerPage * page - dataPerPage, dataPerPage * page);
+        res.render("result", { countVolunteers, page, maxPage, datas: data, province });
+    } catch (err) {
+        console.log(err);
+    }
+}
 module.exports = {
     index,
     register,
     editprofile,
     search,
     searchVolunteers,
-    allVolunteers
+    allVolunteers,
+    otherResource
 }
