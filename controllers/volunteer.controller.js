@@ -1,10 +1,21 @@
 const db = require("../utils/firebase");
 const axios = require("axios");
 const volunteersRef = db.collection("volunteers");
+const other_resourcesRef = db.collection("other_resources");
 const { randid } = require("../utils/randomId");
 
 const getAllVolunteers = async function (req, res) {
     const volunteers = await fetchVolunteers();
+    if (!volunteers.length)
+        return res.status(404).json({
+            status: "error",
+            message: "No Data founded",
+        });
+    return res.status(200).json(volunteers);
+};
+
+const getAllOtherResources = async function (req, res) {
+    const volunteers = await fetchOtherResources();
     if (!volunteers.length)
         return res.status(404).json({
             status: "error",
@@ -189,20 +200,23 @@ const updateVolunteers = async function (req, res) {
 
 const deleteVolunteers = async function (req, res) {
     let reqData = req.body;
-    if (!reqData.secretid || !reqData.docid) return res.status(400).json({
-        "status": "error",
-        "message": "Bad Request"
-    })
+    if (!reqData.secretid || !reqData.docid)
+        return res.status(400).json({
+            status: "error",
+            message: "Bad Request",
+        });
     let data = await fetchVolunteersBySecretId(reqData.secretid);
-    if (!data.length) return res.status(400).json({
-        "status": "error",
-        "message": "User Not Found"
-    });
+    if (!data.length)
+        return res.status(400).json({
+            status: "error",
+            message: "User Not Found",
+        });
     data = data[0];
-    if (reqData.docid != data.id) return res.status(400).json({
-        "status": "error",
-        "message": "Doc Id isn't match"
-    });
+    if (reqData.docid != data.id)
+        return res.status(400).json({
+            status: "error",
+            message: "Doc Id isn't match",
+        });
     try {
         const result = await volunteersRef.doc(data.id).delete();
         console.log(result);
@@ -220,7 +234,7 @@ const deleteVolunteers = async function (req, res) {
                         type: "text",
                         text:
                             "การลบข้อมูลอาสาสมัครของคุณดำเนินการเรียบร้อยแล้ว ขอขอบคุณที่สละเวลาอันมีค่าเพื่อส่วนรวม 🙏🙏",
-                    }
+                    },
                 ],
             }),
         });
@@ -228,18 +242,26 @@ const deleteVolunteers = async function (req, res) {
             status: "success",
             message: "Delete Volunteer Success",
         });
-
     } catch (err) {
         return res.status(400).json({
             status: "success",
             message: "Delete Volunteer Unsuccessful",
         });
     }
-
-}
+};
 
 const fetchVolunteers = async function () {
     const docs = await volunteersRef.get();
+    if (docs.empty) return [];
+    let tempData = [];
+    docs.forEach((doc) => {
+        tempData.push(doc.data());
+    });
+    return tempData;
+};
+
+const fetchOtherResources = async function () {
+    const docs = await other_resourcesRef.get();
     if (docs.empty) return [];
     let tempData = [];
     docs.forEach((doc) => {
@@ -287,5 +309,6 @@ module.exports = {
     fetchVolunteersBySecretId,
     findVolunteersBySecretId,
     fetchVolunteersByUserId,
-    deleteVolunteers
+    deleteVolunteers,
+    getAllOtherResources,
 };
