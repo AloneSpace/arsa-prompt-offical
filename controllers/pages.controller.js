@@ -32,6 +32,8 @@ let editprofile = async (req, res) => {
             "status": "error",
             "message": "User Not Found"
         })
+        // userdata[0].phone = userdata[0].phone[0];
+        // console.log(userdata[0].phohe);
         res.render('volunteers/editprofile', { provinces: provinces, data: userdata[0].data, id : userdata[0].id });
     } catch (err) {
         res.status(404).send("Something Wrong");
@@ -73,6 +75,7 @@ let allVolunteers = async (req, res) => {
         let maxPage = Math.ceil(countVolunteers / dataPerPage);
         maxPage = maxPage > 0 ? maxPage : 1;
         data = data.slice(dataPerPage * page - dataPerPage, dataPerPage * page);
+        console.log(data);
         res.render("result", { countVolunteers, page, maxPage, datas: data, province });
     } catch (err) {
         console.log(err);

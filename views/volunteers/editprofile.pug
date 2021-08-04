@@ -20,7 +20,7 @@ block content
                                 textarea#address(name="address", cols="30", rows="2",placeholder="กรอกที่อยู่" required).form-control= data.address 
                             .mb-3
                                 label.form-label(for='name') เบอร์โทรศัพท์ติดต่อ
-                                input#tel.form-control.form-control-sm(type='text' name="" aria-describedby='nameHelp' placeholder="ใส่เบอร์โทรศัพท์ของคุณ" value=data.phone required)
+                                input#tel.form-control.form-control-sm(type='text' name="" aria-describedby='nameHelp' placeholder="ใส่เบอร์โทรศัพท์ของคุณ" value=data.phone[0] required)
                             .mb-3
                                 label.form-label(for='address') หมายเหตุอื่นๆ
                                 textarea#note(name="address", cols="30", rows="2",placeholder="กรอกหมายเหตุอื่นๆ").form-control= data.note

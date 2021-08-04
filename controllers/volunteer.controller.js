@@ -85,7 +85,7 @@ const createVolunteers = async function (req, res) {
             created_at: +new Date(),
             name: reqData.name,
             note: reqData.note,
-            phone: reqData.phone,
+            phone: [reqData.phone],
             province: reqData.province,
             secretId: randId,
         };
@@ -178,7 +178,7 @@ const updateVolunteers = async function (req, res) {
         address: reqData.address,
         name: reqData.name,
         note: reqData.note,
-        phone: reqData.phone,
+        phone: [reqData.phone],
         province: reqData.province,
     };
     try {
